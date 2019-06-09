@@ -1,6 +1,10 @@
-main: Funkcijos.o
-	g++ -o main OOP5.cpp Functions.o
-funkcijos:
-	g++ -c Functions.cpp
-clean:
-	rm *.o main
+CC=g++
+CFLAGS= -std=c++1z
+DEPS = Functions.h
+OBJ = main.o Functions.o
+
+%.o: %.cpp $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+main: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
