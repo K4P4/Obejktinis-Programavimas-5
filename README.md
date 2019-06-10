@@ -3,7 +3,6 @@
 # Naudojimosi instrukcija:
 
 Naudojantis g++ kompiliatoriumi, linux sistemoje, reikia:
-
--Konsolėje atsidaryti aplanką
--make
--./main
+-`Konsolėjė atsidaryti projekto aplanką
+-`Parašyti ```make```
+-`Parašyti ```./main```
