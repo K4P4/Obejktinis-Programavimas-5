@@ -1,5 +1,9 @@
 #include "Functions.h"
+#include <algorithm>
+#include <iomanip>
 using std::string;
+
+typedef std::pair<std::string,int> pair;
 
 string ValidatePavadinimas() {
 	string pavadinimas;
@@ -50,16 +54,28 @@ void visasTekstas(string pavadinimas) {
 		{
 			++zodziai[zodis];
 		}
+	}
 
-		std::ofstream out("rezultatai.txt");
-		for (const auto&[zodis, sk] : zodziai)
-		{
-			if (sk > 1) {
-				out << "zodis " << zodis << " pasikartojo " << sk << " kart\n";
-			}
-		}
+	std::vector<pair> vec;
+
+	std::copy(zodziai.begin(),
+			zodziai.end(),
+			std::back_inserter<std::vector<pair>>(vec));
+
+	std::sort(vec.begin(), vec.end(),
+			[](const pair& l, const pair& r) {
+				if (l.second != r.second)
+					return l.second < r.second;
+
+				return l.first < r.first;
+			});
+	std::ofstream out("rezultatai.txt");
+	for (auto const &pair: vec) {
+		if(pair.second > 1) out << "zodis " << pair.first << " pasikartojo " << pair.second << std::endl;
 	}
 }
+
+
 
 void visasTekstasEilutem(string pavadinimas) {
 	std::ifstream in(pavadinimas);
@@ -80,19 +96,18 @@ void visasTekstasEilutem(string pavadinimas) {
 		{
 			zodziai[zodis].push_back(eile);
 		}
-
-		std::ofstream out("rezultatai.txt");
-		for (const auto&[zodis, sk] : zodziai)
+	}
+	std::ofstream out("rezultatai.txt");
+	for (const auto&[zodis, sk] : zodziai)
 		{
 			if (sk.size() > 1) {
-				out << "zodis " << zodis << " pasikartojo " << sk.size() << " kart, eilutese: " << sk[0];
+				out <<std::left<< "zodis " <<std::setw(20) << zodis << " pasikartojo " << std::setw(4) <<sk.size() << " kart, eilutese: "<< sk[0];
 				for (int i = 1; i < sk.size(); i++) {
 					if (sk[i - 1] != sk[i]) out << " " << sk[i];
 				}
 				out << std::endl;
 			}
 		}
-	}
 }
 
 void raskURL(string pavadinimas) {
